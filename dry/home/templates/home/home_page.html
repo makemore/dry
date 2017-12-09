@@ -7,8 +7,8 @@
 
     {% for spot in self.spot_pages %}
         {{ spot.title }}
-        {% image spot.image width-400 %}
-        {{ spot.body|richtext }}
+        <br>{% image spot.image width-400 %}
+        <br>{{ spot.body|richtext }}
     {% endfor %}
 
 {% endblock %}
