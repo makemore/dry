@@ -1,6 +1,7 @@
 .idea/
 .viminfo
 env_dry/
+backups/
 .gitconfig
 # Byte-compiled / optimized / DLL files
 __pycache__/
