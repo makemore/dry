@@ -1,7 +1,14 @@
 {% extends "base.html" %}
-
+{% load wagtailimages_tags wagtailcore_tags %}
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
     <h1>DRY</h1>
+
+    {% for spot in self.spot_pages %}
+        {{ spot.title }}
+        {% image spot.image width-400 %}
+        {{ spot.body|richtext }}
+    {% endfor %}
+
 {% endblock %}

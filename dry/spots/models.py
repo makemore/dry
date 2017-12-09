@@ -17,8 +17,20 @@ from wagtailgeowidget.helpers import geosgeometry_str_to_struct
 class SpotIndexPage(Page):
 	subpage_types = ['spots.SpotPage']
 
+	def children(self):
+		return self.get_children().specific().live()
+
+	def get_context(self, request):
+		context = super(SpotIndexPage, self).get_context(request)
+		context['posts'] = SpotPage.objects.descendant_of(
+			self).live().order_by(
+			'-date_published')
+		return context
+
 class SpotPage(Page):
-	date = models.DateField("Post date")
+	date_published = models.DateField(
+		"Date article published", blank=True, null=True
+	)
 	image = models.ForeignKey(
 		'wagtailimages.Image',
 		null=True,
@@ -31,7 +43,7 @@ class SpotPage(Page):
 	location = models.CharField(max_length=250, blank=True, null=True)
 
 	content_panels = Page.content_panels + [
-		FieldPanel('date'),
+		FieldPanel('date_published'),
 		ImageChooserPanel('image'),
 		FieldPanel('body', classname="full"),
 		MultiFieldPanel([
