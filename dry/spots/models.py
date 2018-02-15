@@ -28,6 +28,8 @@ class SpotIndexPage(Page):
 		return context
 
 class SpotPage(Page):
+	facebook_id = models.CharField(max_length=255)
+
 	date_published = models.DateField(
 		"Date article published", blank=True, null=True
 	)
