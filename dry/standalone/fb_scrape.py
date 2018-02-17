@@ -49,7 +49,7 @@ def process_page_of_data(data):
             spot_page.facebook_created = dateutil.parser.parse(post["created_time"])
 
             if "message" in post:
-                spot_page.title = post["message"][:255]
+                spot_page.title = post["message"][:70]
                 spot_page.body = post["message"].replace('\n', '<br />')
             else:
                 spot_page.title = "None"
