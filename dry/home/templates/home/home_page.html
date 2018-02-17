@@ -6,8 +6,14 @@
     <h1>DRY</h1>
 
     {% for spot in self.spot_pages %}
-        {{ spot.title }}
         <br>{% image spot.image width-800 %}
         <br>{{ spot.body|richtext }}
+        {% if spot.address %}
+            <br>{{ spot.address }}
+        {% endif %}
+        {% if spot.location %}
+            <br>{{ spot.location }}
+        {% endif %}
+        <br><br>
     {% endfor %}
 {% endblock %}
