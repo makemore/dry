@@ -1,6 +1,8 @@
 {% load wagtailimages_tags wagtailcore_tags %}
 
-<div class="cell medium-8 large-8 text-center">{% image spot.image width-800 %}
+<div class="cell medium-8 large-8 text-center">
+    <a href=""><</a> ||| <a href="">></a><br>
+    {% image spot.image width-800 %}
     <br>{{ spot.body|richtext }}
     {% if spot.address %}
         <br>{{ spot.address }}
@@ -8,6 +10,5 @@
     {% if spot.location %}
         <br>{{ spot.location }}
     {% endif %}
-    <a href=""><</a> ||| <a href="">></a></div>
 </div>
 
