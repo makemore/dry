@@ -24,10 +24,27 @@ import dateutil.parser
 
 pp = pprint.PrettyPrinter(indent=4)
 
+SpotPage.objects.all().delete()
 
-#SpotPage.objects.all().delete()
+get_images = True
 
-get_images = False
+"""
+GET /oauth/access_token?  
+    grant_type=fb_exchange_token&           
+    client_id={app-id}&
+    client_secret={app-secret}&
+    fb_exchange_token={short-lived-token} 
+    """
+
+
+def get_long_access_token(short_token):
+    payload = requests.get(
+        "https://graph.facebook.com/v2.12/oauth/access_token?grant_type=fb_exchange_token&" +
+        "client_id=" + os.environ.get("FB_APP_ID") + "&client_secret=" + os.environ.get(
+            "FB_APP_SECRET") + "&fb_exchange_token=" + short_token,
+        headers=headers)
+    print(payload.text)
+
 
 def process_page_of_data(data):
     spot_index_page = Page.objects.get(id=4)
@@ -54,7 +71,7 @@ def process_page_of_data(data):
             else:
                 spot_page.title = "None"
 
-            #pp.pprint(post)
+            # pp.pprint(post)
 
             if get_images and spot_page.image is None and "full_picture" in post:
 
@@ -66,7 +83,7 @@ def process_page_of_data(data):
                     continue
 
                 # Get the filename from the url, used for saving later
-                file_name = slugify(post["message"][:100]) + ".jpg"
+                file_name = slugify(spot_page.title) + ".jpg"
 
                 # Create a temporary file
                 lf = tempfile.NamedTemporaryFile()
@@ -125,6 +142,9 @@ headers = {
     'content-type': "application/json",
 }
 
+# get_long_access_token(os.environ.get("FB_USER_TOKEN"))
+
+
 payload = requests.get(
     "https://graph.facebook.com/v2.12/1063487350460910/feed?fields=story,updated_time,created_time,id,message,place,full_picture,attachments",
     headers=headers)
@@ -134,9 +154,8 @@ result = json.loads(payload.text)
 # print(result)
 
 process_page_of_data(result["data"])
-"""
-while "next" in result["paging"]:
+
+while "paging" in result:
     payload = requests.get(result["paging"]["next"], headers=headers)
     result = json.loads(payload.text)
     process_page_of_data(result["data"])
-"""

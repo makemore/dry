@@ -9,6 +9,6 @@ class HomePage(Page):
 
 	@property
 	def spot_pages(self):
-		pages = SpotIndexPage.objects.all()[0].children()
+		pages = SpotIndexPage.objects.all()[0].children()[:1]
 		return pages
 

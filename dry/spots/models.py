@@ -75,3 +75,7 @@ class SpotPage(Page):
     @property
     def lng(self):
         return self.point['x']
+
+    @property
+    def spot_pages(self):
+        return [self]
