@@ -37,7 +37,7 @@
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
 <div class="grid-x">
-    <div class="side-nav cell medium-4 large-4 text-center" style="height:100%;overflow-y:scroll;">
+    <div class="side-nav cell medium-4 large-4 text-center hide-for-small-only" style="height:100%;overflow-y:scroll;">
         <ul>
             {% for spot in spots %}
                 <li><a href="{{ spot.url }}">{{ spot.title|slice:':50' }}</a></li>

@@ -79,3 +79,11 @@ class SpotPage(Page):
     @property
     def spot_pages(self):
         return [self]
+
+    @property
+    def prev(self):
+        return self.get_prev_siblings().live().first()
+
+    @property
+    def next(self):
+        return self.get_next_siblings().live().first()
