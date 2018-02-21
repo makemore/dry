@@ -1,6 +1,6 @@
 {% load wagtailimages_tags wagtailcore_tags %}
 
-<div class="cell medium-8 large-8 text-center" style="height:100%;">
+<div class="cell medium-9 large-9 text-center" style="height:100%;">
     <a href="{{ spot.prev.url }}"><</a> ||| <a href="{{ spot.next.url }}">></a><br>
     {% image spot.image width-800 %}
     <br>{{ spot.body|richtext }}

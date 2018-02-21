@@ -27,6 +27,8 @@ class SpotIndexPage(Page):
         return context
 
 
+
+
 class SpotPage(Page):
     facebook_id = models.CharField(max_length=255, null=True, blank=True)
 
@@ -70,11 +72,13 @@ class SpotPage(Page):
 
     @property
     def lat(self):
-        return self.point['y']
+        if self.location is not None:
+            return self.point['y']
 
     @property
     def lng(self):
-        return self.point['x']
+        if self.location is not None:
+            return self.point['x']
 
     @property
     def spot_pages(self):
