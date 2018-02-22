@@ -1,6 +1,5 @@
 # 1063487350460910/feed?fields=story,updated_time,id,message,place,picture,attachments
 from dotenv import load_dotenv, find_dotenv
-
 load_dotenv(find_dotenv())
 import os, requests, json
 import pprint, django, sys, tempfile

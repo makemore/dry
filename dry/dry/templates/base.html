@@ -1,4 +1,4 @@
-{% load static compress wagtailuserbar %}
+{% load static compress wagtailimages_tags wagtailuserbar %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -23,10 +23,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     {# Global stylesheets #}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/dry.css' %}">
 
     {% compress css %}
         <link rel="stylesheet" type="text/x-scss" href="{% static "css/main.scss" %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/dry.css' %}">
     {% endcompress %}
 
     {% block extra_css %}
@@ -36,21 +36,61 @@
 
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
+{% comment %}
+    <div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
+        <button class="menu-icon" type="button" data-toggle></button>
+        <div class="title-bar-title">Menu</div>
+    </div>
+
+
+    <div class="top-bar" id="main-menu">
+        <div class="top-bar-left">
+            <ul class="dropdown menu" data-dropdown-menu>
+                <li></li>
+            </ul>
+        </div>
+
+        <div class="top-bar-right">
+            <ul class="menu vertical medium-horizontal expanded" data-responsive-menu="drilldown medium-dropdown">
+                <li class="has-submenu">
+                    <a href="#">One</a>
+                    <ul class="submenu menu vertical" data-submenu>
+                        <li><a href="#">One</a></li>
+                        <li><a href="#">Two</a></li>
+                        <li><a href="#">Three</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Two</a></li>
+                <li><a href="#">Three</a></li>
+            </ul>
+        </div>
+    </div>
+{% endcomment %}
 <div class="grid-x">
     <div class="side-nav cell medium-3 large-3 text-center hide-for-small-only" style="height:100%;overflow-y:scroll;">
-        <ul>
+        <a class="logo-link" href="/"><img class="logo-image" src="{% static 'img/logo.jpg' %}"/></a>
+        <ul class="spot-list">
             {% for spot in spots %}
-                <li><a href="{{ spot.url }}">{{ spot.title|slice:':50' }}</a></li>
+                <li><a href="{{ spot.url }}">{% image spot.image width-20 %}
+                    {% if spot.title != "None" %}{{ spot.title|slice:':50' }}{% endif %}</a></li>
             {% endfor %}
         </ul>
     </div>
     {% block content %}{% endblock %}
 
     {# Global javascript #}
-    <script type="text/javascript" src="{% static 'js/dry.js' %}"></script>
+    {% compress js %}
+        <script src="{% static 'jquery/dist/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'foundation-sites/dist/js/foundation.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/dry.js' %}"></script>
+    {% endcompress %}
 
     {% block extra_js %}
         {# Override this in templates to add extra javascript #}
     {% endblock %}
+
+    <script>
+        $(document).foundation();
+    </script>
 </body>
 </html>

@@ -1,14 +1,22 @@
 {% load wagtailimages_tags wagtailcore_tags %}
 
-<div class="cell medium-9 large-9 text-center" style="height:100%;">
-    <a href="{{ spot.prev.url }}"><</a> ||| <a href="{{ spot.next.url }}">></a><br>
-    {% image spot.image width-800 %}
-    <br>{{ spot.body|richtext }}
-    {% if spot.address %}
-        <br>{{ spot.address }}
-    {% endif %}
-    {% if spot.location %}
-        <br>{{ spot.location }}
-    {% endif %}
+<div class="cell medium-9 large-9 text-center gallery-view" style="height:100%;">
+    <div class="gallery-nav">
+        <a href="{{ spot.prev.url }}"><</a> ||| <a href="{{ spot.next.url }}">></a><br>
+    </div>
+    <div class="text-center ">
+        {% image spot.image width-800 %}
+        <div class="poetry">{{ spot.body|richtext }}</div>
+    </div>
+
+    {% comment %}
+        {% if spot.address %}
+            <br>{{ spot.address }}
+        {% endif %}
+
+        {% if spot.location %}
+            <br>{{ spot.location }}
+        {% endif %}
+    {% endcomment %}
 </div>
 
