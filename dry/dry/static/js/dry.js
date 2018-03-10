@@ -14,7 +14,7 @@ $(document).ready(function () {
         console.log(overflow);
 
         if ((imageHeight + galleryNavHeight + poetryHeight) > windowHeight) {
-            image.height(image.height() + overflow);
+            image.height(image.height() + overflow - 40);
         }
 
         $(".poetry").css("width", image.width());

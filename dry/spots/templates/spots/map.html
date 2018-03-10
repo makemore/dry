@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailimages_tags wagtailcore_tags %}
+{% load wagtailimages_tags wagtailcore_tags spots_extras %}
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
@@ -28,7 +28,12 @@
 
                     var marker = new google.maps.Marker({
                         position: {lat:parseFloat(latlng[0]), lng:parseFloat(latlng[1])},
-                        map: map
+                        map: map,
+                        title: '{{ spot.title|strip_newlines }}'
+                    });
+
+                    marker.addListener('click', function(){
+                        window.location.href = '{{ spot.url }}';
                     });
 
                 {% endif %}
