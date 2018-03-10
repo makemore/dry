@@ -1,0 +1,19 @@
+{
+  "name": "dry",
+  "homepage": "https://github.com/chrisbarry/dry",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation-sites": "^6.4.3",
+    "masonry-layout": "^4.2.1"
+  }
+}
