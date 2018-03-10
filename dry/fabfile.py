@@ -49,7 +49,7 @@ def deploy():
             run("git pull")
             # run("supervisorctl restart crossover")
             run("pip install -r " + "requirements.txt")
+            run("bower install")
             run("python manage.py migrate --settings=" + repoName + ".settings.production")
             run("python manage.py collectstatic --noinput --settings=" + repoName + ".settings.production")
-            run("bower install")
             run("supervisorctl restart " + outername)

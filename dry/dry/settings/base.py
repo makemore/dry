@@ -146,6 +146,8 @@ BASE_URL = 'http://example.com'
 
 GOOGLE_MAPS_V3_APIKEY = os.environ.get("GOOGLE_MAPS_V3_APIKEY")
 
+COMPRESS_ROOT = STATIC_ROOT
+
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )

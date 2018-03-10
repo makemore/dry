@@ -1,0 +1,63 @@
+@import "foundation-sites/scss/foundation";
+@import "settings";
+
+@include foundation-everything;
+
+@import "pages/gallery.scss";
+
+html, body {
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+.grid-x {
+  height: 100%;
+}
+
+.side-nav {
+  ul {
+    list-style: none;
+    text-align: left;
+  }
+}
+
+.top-bar {
+  padding: 0px;
+  background-color: white;
+
+  ul {
+    background-color: white;
+  }
+  a {
+    padding: 20px !important;
+  }
+}
+
+.top-menu {
+  a {
+    color: blue;
+  }s
+}
+
+
+.poetry {
+  display:inline-block;
+}
+.logo-image {
+  width: 150px;
+}
+
+.spot-list {
+  li {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+.logo-link {
+  float: left;
+  padding-left: 20px;
+  padding-bottom: 10px;
+}
