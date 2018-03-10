@@ -69,6 +69,10 @@
 <div class="grid-x">
     <div class="side-nav cell medium-3 large-3 text-center hide-for-small-only" style="height:100%;overflow-y:scroll;">
         <a class="logo-link" href="/"><img class="logo-image" src="{% static 'img/logo.jpg' %}"/></a>
+        <div class="top-menu" style="float:left">
+            ||| <a href="/">Home</a> ||| <a href="/map/">Map</a>
+        </div>
+
         <ul class="spot-list">
             {% for spot in spots %}
                 <li><a href="{{ spot.url }}">{% image spot.image width-20 %}
