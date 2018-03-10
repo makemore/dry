@@ -40,3 +40,16 @@ def download_db():
     backup_database()
     download_database()
     restore_local_database()
+
+
+def deploy():
+    code_dir = '/webapps/' + outername + "/" + repoName + "/"
+    with cd(code_dir):
+        with prefix("source ../env_" + project + "/bin/activate"):
+            run("git pull")
+            # run("supervisorctl restart crossover")
+            run("pip install -r " + "requirements.txt")
+            run("python manage.py migrate --settings=" + repoName + ".settings.production")
+            run("python manage.py collectstatic --noinput --settings=" + repoName + ".settings.production")
+            run("bower install")
+            run("supervisorctl restart " + outername)
