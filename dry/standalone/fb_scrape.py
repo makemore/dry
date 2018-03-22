@@ -23,7 +23,7 @@ import dateutil.parser
 
 pp = pprint.PrettyPrinter(indent=4)
 
-SpotPage.objects.all().delete()
+#SpotPage.objects.all().delete()
 
 get_images = True
 

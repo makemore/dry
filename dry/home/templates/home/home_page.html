@@ -3,7 +3,5 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-    {% for spot in self.spot_pages %}
-        {% include "includes/gallery_view.html" %}
-    {% endfor %}
+    {% include "includes/gallery_view.html" with spot=self.spot_pages %}
 {% endblock %}
