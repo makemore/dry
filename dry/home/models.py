@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from wagtail.wagtailcore.models import Page, Orderable
-from spots.models import SpotIndexPage
+from spots.models import SpotIndexPage, SpotPage
 
 
 class HomePage(Page):
@@ -11,7 +11,7 @@ class HomePage(Page):
 
     @property
     def spot_pages(self):
-        pages = SpotIndexPage.objects.all()[0].children()[:5]
+        pages = SpotPage.objects.order_by("-facebook_created")[:5]
         found = False
         index = -1
         while not found:
