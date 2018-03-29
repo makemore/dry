@@ -21,16 +21,18 @@
     </title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
+    {% block extra_head %}{% endblock %}
     {# Global stylesheets #}
 
     {% compress css %}
         <link rel="stylesheet" type="text/x-scss" href="{% static "css/main.scss" %}"/>
     {% endcompress %}
 
+
     {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
     {% endblock %}
+
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
