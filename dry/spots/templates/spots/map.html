@@ -2,6 +2,17 @@
 {% load wagtailimages_tags wagtailcore_tags spots_extras %}
 {% block body_class %}template-homepage{% endblock %}
 
+{% block extra_head %}
+
+    <meta property="og:url"
+          content="http://drypoetry.life/map/"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="Dry Poetry : Spot Map"/>
+    <meta property="og:description" content="Wildly inclusive blowcaching geo-diamante lookup vex"/>
+    <meta property="og:image"
+          content="http://drypoetry.life/static/img/map.jpg"/>
+
+{% endblock %}
 {% block content %}
     <style>
         #map {
@@ -27,12 +38,12 @@
                     console.log(latlng);
 
                     var marker = new google.maps.Marker({
-                        position: {lat:parseFloat(latlng[0]), lng:parseFloat(latlng[1])},
+                        position: {lat: parseFloat(latlng[0]), lng: parseFloat(latlng[1])},
                         map: map,
                         title: '{{ spot.title|strip_newlines }}'
                     });
 
-                    marker.addListener('click', function(){
+                    marker.addListener('click', function () {
                         window.location.href = '{{ spot.url }}';
                     });
 
