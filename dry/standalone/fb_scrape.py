@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # 1063487350460910/feed?fields=story,updated_time,id,message,place,picture,attachments
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
@@ -42,6 +43,7 @@ def get_long_access_token(short_token):
         "client_id=" + os.environ.get("FB_APP_ID") + "&client_secret=" + os.environ.get(
             "FB_APP_SECRET") + "&fb_exchange_token=" + short_token,
         headers=headers)
+
     print(payload.text)
 
 
@@ -141,7 +143,8 @@ headers = {
     'content-type': "application/json",
 }
 
-# get_long_access_token(os.environ.get("FB_USER_TOKEN"))
+#get_long_access_token(os.environ.get("FB_USER_TOKEN"))
+
 
 
 payload = requests.get(
@@ -150,7 +153,7 @@ payload = requests.get(
 
 result = json.loads(payload.text)
 
-# print(result)
+print(result)
 
 process_page_of_data(result["data"])
 
