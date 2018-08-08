@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import AudioScreen from '../screens/AudioScreen';
+import UploadScreen from '../screens/UploadScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -55,11 +56,11 @@ AudioStack.navigationOptions = {
 };
 
 const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+  Settings: UploadScreen,
 });
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+  tabBarLabel: 'Upload',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}

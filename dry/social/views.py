@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import SpotAV
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # Create your views here.
 def handle_uploaded_file(f):
@@ -11,6 +12,8 @@ def handle_uploaded_file(f):
             destination.write(chunk)
 
 
+
+#@api_view(['GET', 'POST'])
 @csrf_exempt
 def upload_spot_av(request):
     if request.method == 'POST':
