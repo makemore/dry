@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "compressor",
     'wagtailgeowidget',
     'spots',
+    'social'
 ]
 
 MIDDLEWARE = [

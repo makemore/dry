@@ -1,0 +1,34 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import SpotAV
+
+
+# Create your views here.
+def handle_uploaded_file(f):
+    with open('some/file/name.txt', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+
+@csrf_exempt
+def upload_spot_av(request):
+    if request.method == 'POST':
+        audio = request.FILES["audio"]
+        image = request.FILES["image"]
+        print(audio)
+        print(image)
+
+        spotAV = SpotAV(audio=audio, image=image)
+        spotAV.save()
+
+        # form = UploadFileForm(request.POST, request.FILES)
+        # files = request.FILES.getlist('file_field')
+        # print(request.FILES)
+        # for f in files:
+        #    print(f)
+        #    #instance = ModelWithFileField(file_field=request.FILES['file'])
+        #    #instance.save()
+        return HttpResponse("OK")
+
+    return HttpResponse("not get")
