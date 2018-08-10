@@ -108,3 +108,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 bower_components/
+.DS_Store
