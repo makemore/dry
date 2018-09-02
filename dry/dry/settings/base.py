@@ -28,6 +28,12 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
     'home',
     'search',
 
@@ -48,16 +54,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
 
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'social',
+
     "compressor",
     'wagtailgeowidget',
     'spots',
-    'social'
+
 ]
 
 MIDDLEWARE = [
@@ -145,7 +147,7 @@ WAGTAIL_SITE_NAME = "dry"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'http://example.com'
+BASE_URL = 'http://drypoetry.life'
 
 GOOGLE_MAPS_V3_APIKEY = os.environ.get("GOOGLE_MAPS_V3_APIKEY")
 

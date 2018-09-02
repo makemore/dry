@@ -1,11 +1,14 @@
+import os
 from django.db import models
 from dry.models import BaseModel
+from django.core.files.base import File
 # Create your models here.
 from moviepy.editor import VideoFileClip, ImageClip, CompositeVideoClip, AudioFileClip, CompositeAudioClip, \
     ImageSequenceClip
 import moviepy.video.fx.all as vfx
 from moviepy.editor import concatenate_videoclips
 from moviepy.video.fx.all import crop
+from PIL import Image
 
 
 class SpotAV(BaseModel):
@@ -17,6 +20,20 @@ class SpotAV(BaseModel):
         if self.image is None or self.audio is None:
             raise Exception("no image or audio present")
         audio_clip = AudioFileClip(self.audio.path)
+
+        im = Image.open(self.image.path)
+        print(im.size[0], im.size[1])
+        if im.size[1] > 720:
+            print("doing resize")
+            ratio = 720 / im.size[1]
+            new_image = im.resize((int(im.size[0] * ratio), int(im.size[1] * ratio)), Image.ANTIALIAS)
+            print("resizing too", int(im.size[0] * ratio), int(im.size[1] * ratio))
+            filename = os.path.basename(self.image.path)
+            new_image.save(filename)
+            f = open(filename, "rb")
+            self.image.save(os.path.basename(filename), File(f))
+            os.remove(filename)
+
 
         image_clip = ImageClip(self.image.path)
         image_clip.set_duration(audio_clip.duration)
@@ -36,8 +53,13 @@ class SpotAV(BaseModel):
 
         video.duration = audio_clip.duration
         (w, h) = video.size
-        video.write_videofile("myHolidays_edited.mp4", fps=30, codec="h264")
-        #cropped_clip = crop(video, width=1280, height=720, x_center=w / 2, y_center=h / 2)
-        #cropped_clip.write_videofile("myHolidays_edited.mp4", fps=30, codec="h264")
+        filename = 'video' + str(self.id) + '.mp4'
+        video.write_videofile(filename, fps=30, codec="h264")
+        f = open(filename, "rb")
+        self.video.save(os.path.basename(filename), File(f))
+        os.remove(filename)
+
+        # cropped_clip = crop(video, width=1280, height=720, x_center=w / 2, y_center=h / 2)
+        # cropped_clip.write_videofile("myHolidays_edited.mp4", fps=30, codec="h264")
 
         print(self)

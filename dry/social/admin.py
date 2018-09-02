@@ -14,3 +14,4 @@ class SpotAVAdmin(admin.ModelAdmin):
     actions = [render_video]
 
 admin.site.register(SpotAV, SpotAVAdmin)
+#admin.site.register(SpotAV)

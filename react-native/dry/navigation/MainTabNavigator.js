@@ -46,7 +46,7 @@ const AudioStack = createStackNavigator({
 });
 
 AudioStack.navigationOptions = {
-  tabBarLabel: 'Audio',
+  tabBarLabel: 'Poetry',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}

@@ -12,7 +12,7 @@ import {WebBrowser} from 'expo';
 
 import {Button} from 'react-native';
 import {ImagePicker} from 'expo';
-
+import CommonDataManager from '../data/CommonDataManager';
 import {MonoText} from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
@@ -127,7 +127,13 @@ export default class HomeScreen extends React.Component {
 
         console.log(result);
 
+
+        //commonData.setUserID("User1");
+
+
         if (!result.cancelled) {
+            let commonData = CommonDataManager.getInstance();
+            commonData.imageFileUri = result.uri;
             this.setState({image: result.uri});
         }
         else {
@@ -148,6 +154,8 @@ export default class HomeScreen extends React.Component {
         console.log(result);
 
         if (!result.cancelled) {
+            let commonData = CommonDataManager.getInstance();
+            commonData.imageFileUri = result.uri;
             this.setState({image: result.uri});
         }
         else {

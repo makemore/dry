@@ -14,8 +14,9 @@ import {Button} from 'react-native';
 import {ImagePicker} from 'expo';
 
 import {MonoText} from '../components/StyledText';
+import CommonDataManager from "../data/CommonDataManager";
 
-export default class HomeScreen extends React.Component {
+export default class UploadScreen extends React.Component {
     static navigationOptions = {
         header: null,
     };
@@ -24,8 +25,39 @@ export default class HomeScreen extends React.Component {
         image: null,
     };
 
+    onNavigatorEvent(event) {
+        console.log("tab selected", event.id);
+        if (event.id === 'willAppear') {
+            // Load data now
+        }
+    }
+
+    constructor(props) {
+        super(props);
+        let commonData = CommonDataManager.getInstance();
+        //his.setState({image: commonData.imageFileUri});
+        console.log(this);
+        console.log(this.props);
+        console.log(this.props.navigaton);
+        //this.props.navigation.addListener(this.onNavigatorEvent);  //setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+        //this.props.navigation.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+        var that = this;
+        this.props.navigation.addListener("didFocus", function () {
+            console.log("here");
+            that.setState({image: commonData.imageFileUri});
+            that.setState({audioFileUri: commonData.audioFileUri});
+            //that.state.image = commonData.imageFileUri;
+            //that.state.audioFileUri = commonData.audioFileUri;
+        })
+    }
+
+
     render() {
         let {image} = this.state;
+        let commonData = CommonDataManager.getInstance();
+        this.state.image = commonData.imageFileUri;
+        this.state.audioFileUri = commonData.audioFileUri;
+
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -38,7 +70,9 @@ export default class HomeScreen extends React.Component {
                     </View>
 
                     {image && <Image source={{uri: image}} style={{width: 200, height: 200}}/>}
-
+                    <View>
+                        <Text>{this.state.audioFileUri}</Text>
+                    </View>
                 </ScrollView>
 
 
@@ -80,7 +114,7 @@ export default class HomeScreen extends React.Component {
     };
 
     _handleUpload = async () => {
-        const {Location, Permissions} = Expo;
+        /*const {Location, Permissions} = Expo;
         const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
         const {status2} = await Permissions.askAsync(Permissions.CAMERA);
 
@@ -107,11 +141,28 @@ export default class HomeScreen extends React.Component {
 
         // Upload the image using the fetch and FormData APIs
         let formData = new FormData();
-        // Assume "photo" is the name of the form field the server expects
-        formData.append('image', {uri: localUri, name: filename, type});
-        formData.append('audio', {uri: localUri, name: filename, type});
+        // Assume "photo" is the name of the form field the server expects*/
 
-        return await fetch("http://192.168.0.48:8000/social/spot-av-upload/", {
+        //let commonData = CommonDataManager.getInstance();
+        //this.setState({image: result.uri});
+        let commonData = CommonDataManager.getInstance();
+
+        var imageFilename = commonData.imageFileUri.replace(/^.*[\\\/]/, '');
+        formData.append('image', {uri: commonData.imageFileUri, name: filename, type});
+        type = "audio";
+
+
+        //commonData.setUserID("User1");
+        //commonData.audioFileUri = info.uri;
+
+        //var path = "file:///Users/chris/Library/Developer/CoreSimulator/Devices/9ED2720C-DB04-4CEC-B079-B2E0FB1D605E/data/Containers/Data/Application/50D353C7-8CEF-4C5B-B13E-0828B5BBD06D/Library/Caches/ExponentExperienceData/%2540chrisbarry%252Fdry/AV/recording-A8BBB717-44B0-468F-AC04-37BDA47F487E.caf";
+        var path = commonData.audioFileUri;
+        var audioFilename = path.replace(/^.*[\\\/]/, '');
+        audioFilename = audioFilename.slice(0, -4);
+        audioFilename += ".wav";
+
+        formData.append('audio', {uri: path, name: audioFilename, type});
+        return await fetch("http://127.0.0.1:8000/social/spot-av-upload/", {
             method: 'POST',
             body: formData,
             header: {
