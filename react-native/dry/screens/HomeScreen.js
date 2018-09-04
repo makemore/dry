@@ -54,28 +54,59 @@ export default class HomeScreen extends React.Component {
                             <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
                         </TouchableOpacity>
                     </View>*/
+    constructor(props) {
+        super(props);
+        let commonData = CommonDataManager.getInstance();
+        //his.setState({image: commonData.imageFileUri});
+        var that = this;
+        this.props.navigation.addListener("didFocus", function () {
+            //console.log("here");
+            //console.log(require(''));
+            //     that.setState({image: "../assets/images/logo.jpg"});
+        })
+    }
 
     render() {
         let {image} = this.state;
+
+        //this.state.image = require('../assets/images/logo.jpg');
+
         return (
             <View style={styles.container}>
+
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
 
-                    <View style={styles.helpContainer}>
-                        <TouchableOpacity onPress={this._handleCameraOpen} style={styles.helpLink}>
-                            <Text style={styles.helpLinkText}>Take photo</Text>
-                        </TouchableOpacity>
+                    <View style={styles.welcomeContainer}>
+                        {image ? (
+                            <Image resizeMode={'cover'} source={{uri: image}} style={{width: '100%', height: 300}}/>
+                        ) : (
+                            <Image resizeMode={'cover'} source={require('../assets/images/logo.jpg')}
+                                   style={{width: '100%', height: 300}}/>
+                        )}
+
+
                     </View>
 
-                    <View style={styles.helpContainer}>
-                        <TouchableOpacity onPress={this._handlePhotoPick} style={styles.helpLink}>
-                            <Text style={styles.helpLinkText}>Pick photo</Text>
-                        </TouchableOpacity>
+
+                    <View style={styles.getStartedContainer}>
+
+                        <Text style={styles.getStartedText}>Spot safely brothers and sisters</Text>
+                        <Text style={styles.getStartedText}>
+
+                        </Text>
                     </View>
 
-
-                    {image && <Image source={{uri: image}} style={{width: 200, height: 200}}/>}
+                    <View style={styles.buttonOuter}>
+                        <TouchableOpacity onPress={this._handleCameraOpen}>
+                            <Text color="#3cc3f3" style={styles.buttonText1}>Take photo</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.buttonOuter}>
+                        <TouchableOpacity onPress={this._handlePhotoPick}>
+                            <Text color="#fa2bf5" style={styles.buttonText2}>Pick photo</Text>
+                        </TouchableOpacity>
+                    </View>
 
                 </ScrollView>
 
@@ -247,6 +278,9 @@ const styles = StyleSheet.create({
         marginTop: 15,
         alignItems: 'center',
     },
+    button1: {
+        color: "#3cc3f3"
+    },
     helpLink: {
         paddingVertical: 15,
     },
@@ -254,4 +288,26 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#2e78b7',
     },
+    buttonOuter: {
+        marginTop: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#555555',
+        borderRadius: 10,
+        width: "100%",
+        borderWidth: 1,
+        borderColor: '#fff'
+    },
+    buttonText1: {
+        color: '#3cc3f3',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    buttonText2: {
+        color: '#fa2bf5',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
+    }
 });

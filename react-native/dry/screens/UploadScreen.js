@@ -58,26 +58,32 @@ export default class UploadScreen extends React.Component {
         this.state.image = commonData.imageFileUri;
         this.state.audioFileUri = commonData.audioFileUri;
 
-        return (
+
+        return (!this.state.image || !this.state.audioFileUri ? (
+
+            <View style={styles.centerView}>
+                <Text style={styles.helpLinkText}>You need to Pap a snap and record some audio before you can
+                    upload</Text>
+            </View>
+        ) : (
             <View style={styles.container}>
-                <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
 
 
-                    <View style={styles.helpContainer}>
-                        <TouchableOpacity onPress={this._handleUpload} style={styles.helpLink}>
-                            <Text style={styles.helpLinkText}>Upload</Text>
+                <View style={styles.centerView}>
+                    <View style={styles.buttonOuter}>
+                        <TouchableOpacity onPress={this._handleUpload}>
+                            <Text color="#fa2bf5" style={styles.buttonText2}>Upload</Text>
                         </TouchableOpacity>
                     </View>
+                </View>
 
-                    {image && <Image source={{uri: image}} style={{width: 200, height: 200}}/>}
+                {/*{image && <Image source={{uri: image}} style={{width: 200, height: 200}}/>}
                     <View>
                         <Text>{this.state.audioFileUri}</Text>
-                    </View>
-                </ScrollView>
-
-
+                    </View>*/}
+                
             </View>
-        );
+        ));
     }
 
     _maybeRenderDevelopmentModeWarning() {
@@ -136,22 +142,29 @@ export default class UploadScreen extends React.Component {
         let filename = localUri.split('/').pop();
 
         // Infer the type of the image
-        let match = /\.(\w+)$/.exec(filename);
+
         let type = match ? `image/${match[1]}` : `image`;
 
         // Upload the image using the fetch and FormData APIs
-        let formData = new FormData();
-        // Assume "photo" is the name of the form field the server expects*/
+
+        // Assume "photo" is the name of the form field the server expects
 
         //let commonData = CommonDataManager.getInstance();
         //this.setState({image: result.uri});
+
+        */
+
+        let formData = new FormData();
         let commonData = CommonDataManager.getInstance();
+        //let match = /\.(\w+)$/.exec(filename);
+
+        //let type = match ? `image/${match[1]}` : `image`;
+        var type = "image";
 
         var imageFilename = commonData.imageFileUri.replace(/^.*[\\\/]/, '');
-        formData.append('image', {uri: commonData.imageFileUri, name: filename, type});
-        type = "audio";
 
-
+        formData.append('image', {uri: commonData.imageFileUri, name: imageFilename, type});
+        //var type = "audio";
         //commonData.setUserID("User1");
         //commonData.audioFileUri = info.uri;
 
@@ -160,8 +173,9 @@ export default class UploadScreen extends React.Component {
         var audioFilename = path.replace(/^.*[\\\/]/, '');
         audioFilename = audioFilename.slice(0, -4);
         audioFilename += ".wav";
-
+        type = "audio";
         formData.append('audio', {uri: path, name: audioFilename, type});
+
         return await fetch("http://127.0.0.1:8000/social/spot-av-upload/", {
             method: 'POST',
             body: formData,
@@ -170,8 +184,6 @@ export default class UploadScreen extends React.Component {
             },
         });
     };
-
-
 }
 
 const styles = StyleSheet.create({
@@ -186,8 +198,15 @@ const styles = StyleSheet.create({
         lineHeight: 19,
         textAlign: 'center',
     },
+    centerView: {
+        height: "100%",
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     contentContainer: {
         paddingTop: 30,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     welcomeContainer: {
         alignItems: 'center',
@@ -258,7 +277,32 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
     },
     helpLinkText: {
-        fontSize: 14,
-        color: '#2e78b7',
+        fontSize: 20,
+        color: '#3cc3f3',
+        textAlign: "center"
     },
+    buttonOuter: {
+        marginRight: 40,
+        marginLeft: 40,
+        marginTop: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#555555',
+        borderRadius: 10,
+        width: "100%",
+        borderWidth: 1,
+        borderColor: '#fff'
+    },
+    buttonText1: {
+        color: '#3cc3f3',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    buttonText2: {
+        color: '#fa2bf5',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
+    }
 });

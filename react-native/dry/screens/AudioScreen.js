@@ -42,8 +42,8 @@ const ICON_THUMB_1 = new Icon(require('./assets/images/thumb_1.png'), 18, 19);
 const ICON_THUMB_2 = new Icon(require('./assets/images/thumb_2.png'), 15, 19);
 
 const {width: DEVICE_WIDTH, height: DEVICE_HEIGHT} = Dimensions.get('window');
-const BACKGROUND_COLOR = '#FFF8ED';
-const LIVE_COLOR = '#FF0000';
+const BACKGROUND_COLOR = '#FFFFFF';
+const LIVE_COLOR = '#FFFFFF';
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
 
@@ -192,6 +192,7 @@ export default class AudioScreen extends React.Component {
             shouldDuckAndroid: true,
             interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
         });
+
         const {sound, status} = await this.recording.createNewLoadedSound(
             {
                 isLooping: true,
@@ -214,6 +215,7 @@ export default class AudioScreen extends React.Component {
             this.setState({recordButtonText: "Record"});
         } else {
             this.setState({recordButtonText: "Stop"});
+            this.setState({playButtonText: "Play"});
             this._stopPlaybackAndBeginRecording();
         }
     };
@@ -344,20 +346,21 @@ export default class AudioScreen extends React.Component {
                 <View/>
             </View>
         ) : (
-
-
-            <View style={styles.container}>
-                <View style={styles.helpContainer}>
-                    <TouchableOpacity onPress={this._onRecordPressed} style={styles.helpLink}>
-                        <Text style={styles.helpLinkText}>{this.state.recordButtonText}</Text>
+            <View style={styles.centerView}>
+                <View style={styles.buttonOuter}>
+                    <TouchableOpacity onPress={this._onRecordPressed}>
+                        <Text color="#3cc3f3" style={styles.buttonText1}>{this.state.recordButtonText}</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.helpContainer}>
-                    <TouchableOpacity onPress={this._onPlayPausePressed} style={styles.helpLink}>
-                        <Text style={styles.helpLinkText}>{this.state.playButtonText}</Text>
+                <View style={styles.buttonOuter}>
+                    <TouchableOpacity onPress={this._onPlayPausePressed}>
+                        <Text color="#fa2bf5" style={styles.buttonText2}>{this.state.playButtonText}</Text>
                     </TouchableOpacity>
                 </View>
-                <View
+                {/*
+
+
+                 <View
                     style={[
                         styles.halfScreenContainer,
                         {
@@ -374,22 +377,7 @@ export default class AudioScreen extends React.Component {
                             disabled={this.state.isLoading}>
                             <Image style={styles.image} source={ICON_RECORD_BUTTON.module}/>
                         </TouchableHighlight>
-                        <View style={styles.recordingDataContainer}>
-                            <View/>
-                            <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular'}]}>
-                                {this.state.isRecording ? 'LIVE' : ''}
-                            </Text>
-                            <View style={styles.recordingDataRowContainer}>
-                                <Image
-                                    style={[styles.image, {opacity: this.state.isRecording ? 1.0 : 0.0}]}
-                                    source={ICON_RECORDING.module}
-                                />
-                                <Text style={[styles.recordingTimestamp, {fontFamily: 'cutive-mono-regular'}]}>
-                                    {this._getRecordingTimestamp()}
-                                </Text>
-                            </View>
-                            <View/>
-                        </View>
+
                         <View/>
                     </View>
                     <View/>
@@ -404,7 +392,7 @@ export default class AudioScreen extends React.Component {
                     ]}>
                     <View/>
                     <View style={styles.playbackContainer}>
-                        {/*<Slider
+                        <Slider
                             style={styles.playbackSlider}
                             trackImage={ICON_TRACK_1.module}
                             thumbImage={ICON_THUMB_1.module}
@@ -412,7 +400,7 @@ export default class AudioScreen extends React.Component {
                             onValueChange={this._onSeekSliderValueChange}
                             onSlidingComplete={this._onSeekSliderSlidingComplete}
                             disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-                        />*/}
+                        />
                         <Text style={[styles.playbackTimestamp, {fontFamily: 'cutive-mono-regular'}]}>
                             {this._getPlaybackTimestamp()}
                         </Text>
@@ -481,6 +469,9 @@ export default class AudioScreen extends React.Component {
                     </View>
                     <View/>
                 </View>
+
+                */}
+
             </View>
         );
     }
@@ -500,6 +491,11 @@ const styles = StyleSheet.create({
         backgroundColor: BACKGROUND_COLOR,
         minHeight: DEVICE_HEIGHT,
         maxHeight: DEVICE_HEIGHT,
+    },
+    centerView: {
+        height: "100%",
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     noPermissionsText: {
         textAlign: 'center',
@@ -617,4 +613,30 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#2e78b7',
     },
+    buttonOuter: {
+        marginRight: 40,
+        marginLeft: 40,
+        paddingTop: 10,
+        marginBottom:20,
+        paddingBottom:10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#555555',
+        borderRadius: 10,
+        width: "100%",
+        borderWidth: 1,
+        borderColor: '#fff'
+    },
+    buttonText1: {
+        color: '#3cc3f3',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    buttonText2: {
+        color: '#fa2bf5',
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
+    }
 });
