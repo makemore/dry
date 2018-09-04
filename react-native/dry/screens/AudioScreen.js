@@ -11,6 +11,7 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
+    TouchableOpacity,
     View,
 } from 'react-native';
 
@@ -68,6 +69,8 @@ export default class AudioScreen extends React.Component {
             shouldCorrectPitch: true,
             volume: 1.0,
             rate: 1.0,
+            recordButtonText: "Record",
+            playButtonText: "Play",
         };
         this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
         // // UNCOMMENT THIS TO TEST maxFileSize:
@@ -208,7 +211,9 @@ export default class AudioScreen extends React.Component {
     _onRecordPressed = () => {
         if (this.state.isRecording) {
             this._stopRecordingAndEnablePlayback();
+            this.setState({recordButtonText: "Record"});
         } else {
+            this.setState({recordButtonText: "Stop"});
             this._stopPlaybackAndBeginRecording();
         }
     };
@@ -217,8 +222,10 @@ export default class AudioScreen extends React.Component {
         if (this.sound != null) {
             if (this.state.isPlaying) {
                 this.sound.pauseAsync();
+                this.setState({playButtonText: "Play"});
             } else {
                 this.sound.playAsync();
+                this.setState({playButtonText: "Stop"});
             }
         }
     };
@@ -337,7 +344,19 @@ export default class AudioScreen extends React.Component {
                 <View/>
             </View>
         ) : (
+
+
             <View style={styles.container}>
+                <View style={styles.helpContainer}>
+                    <TouchableOpacity onPress={this._onRecordPressed} style={styles.helpLink}>
+                        <Text style={styles.helpLinkText}>{this.state.recordButtonText}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.helpContainer}>
+                    <TouchableOpacity onPress={this._onPlayPausePressed} style={styles.helpLink}>
+                        <Text style={styles.helpLinkText}>{this.state.playButtonText}</Text>
+                    </TouchableOpacity>
+                </View>
                 <View
                     style={[
                         styles.halfScreenContainer,
@@ -385,7 +404,7 @@ export default class AudioScreen extends React.Component {
                     ]}>
                     <View/>
                     <View style={styles.playbackContainer}>
-                        <Slider
+                        {/*<Slider
                             style={styles.playbackSlider}
                             trackImage={ICON_TRACK_1.module}
                             thumbImage={ICON_THUMB_1.module}
@@ -393,7 +412,7 @@ export default class AudioScreen extends React.Component {
                             onValueChange={this._onSeekSliderValueChange}
                             onSlidingComplete={this._onSeekSliderSlidingComplete}
                             disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-                        />
+                        />*/}
                         <Text style={[styles.playbackTimestamp, {fontFamily: 'cutive-mono-regular'}]}>
                             {this._getPlaybackTimestamp()}
                         </Text>
@@ -590,5 +609,12 @@ const styles = StyleSheet.create({
     },
     rateSlider: {
         width: DEVICE_WIDTH / 2.0,
+    },
+    helpLink: {
+        paddingVertical: 15,
+    },
+    helpLinkText: {
+        fontSize: 14,
+        color: '#2e78b7',
     },
 });

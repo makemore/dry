@@ -24,12 +24,7 @@ export default class HomeScreen extends React.Component {
         image: null,
     };
 
-    render() {
-        let {image} = this.state;
-        return (
-            <View style={styles.container}>
-                <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                    /*<View style={styles.welcomeContainer}>
+    /*<View style={styles.welcomeContainer}>
                         <Image
                             source={
                                 __DEV__
@@ -60,7 +55,14 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     </View>*/
 
-                     <View style={styles.helpContainer}>
+    render() {
+        let {image} = this.state;
+        return (
+            <View style={styles.container}>
+                <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+
+
+                    <View style={styles.helpContainer}>
                         <TouchableOpacity onPress={this._handleCameraOpen} style={styles.helpLink}>
                             <Text style={styles.helpLinkText}>Take photo</Text>
                         </TouchableOpacity>
