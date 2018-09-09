@@ -10,22 +10,23 @@ import os
 
 
 
-env.hosts = ['python.mkmrd.com']
-env.user = 'dry'
-env.passwords = {'dry@python.mkmrd.com:22': os.environ.get("SERVER_PASSWORD")}
+#env.hosts = ['python.mkmrd.com']
+env.hosts = ['beta.drypoetry.life']
+env.user = 'chris'
+#env.passwords = {'dry@python.mkmrd.com:22': os.environ.get("SERVER_PASSWORD")}
 outername = "dry" #or hemingwaybeta
 repoName = "dry" #this is always the same, just on a different branch
 project = "dry"
-root_dir = '/webapps/'
+root_dir = '/opt/'
 
 def backup_database():
-    code_dir = '/webapps/' + outername
+    code_dir = root_dir + outername
     with cd(code_dir):
         run("pg_dump " + outername + " > env_dry/backups/" + outername + " --clean")
 
 
 def download_database():
-    code_dir = '/webapps/' + outername
+    code_dir = root_dir + outername
     with cd(code_dir):
         get('env_dry/backups/' + outername, '../backups/' + outername)
 
@@ -43,13 +44,13 @@ def download_db():
 
 
 def deploy():
-    code_dir = '/webapps/' + outername + "/" + repoName + "/"
+    code_dir = root_dir + outername + "/" + repoName + "/"
     with cd(code_dir):
         with prefix("source ../env_" + project + "/bin/activate"):
             run("git pull")
             # run("supervisorctl restart crossover")
             run("pip install -r " + "requirements.txt")
-            run("bower install")
+            #run("bower install")
             run("python manage.py migrate --settings=" + repoName + ".settings.production")
             run("python manage.py collectstatic --noinput --settings=" + repoName + ".settings.production")
             run("supervisorctl restart " + outername)

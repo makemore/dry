@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import {WebBrowser} from 'expo';
 
+import axios from 'axios';
+
 import {Button} from 'react-native';
 import {ImagePicker} from 'expo';
 
@@ -25,6 +27,7 @@ export default class UploadScreen extends React.Component {
 
     state = {
         image: null,
+        uploadProgress: 0
     };
 
     onNavigatorEvent(event) {
@@ -41,10 +44,10 @@ export default class UploadScreen extends React.Component {
         //this.props.navigation.addListener(this.onNavigatorEvent);  //setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
         //this.props.navigation.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
         this._handleTextChange = this._handleTextChange.bind(this);
+        this._handleUpload = this._handleUpload.bind(this);
 
         var that = this;
         this.props.navigation.addListener("didFocus", function () {
-
             that.setState({image: commonData.imageFileUri});
             that.setState({audioFileUri: commonData.audioFileUri});
             //that.state.image = commonData.imageFileUri;
@@ -76,6 +79,9 @@ export default class UploadScreen extends React.Component {
                             <Text color="#fa2bf5" style={styles.buttonText2}>Upload</Text>
                         </TouchableOpacity>
                     </View>
+
+                    <Text style={styles.buttonText3}>{this.state.uploadProgress}</Text>
+
                     <Text style={styles.buttonText3}>Add your poetry</Text>
                     <TextInput
                         style={styles.textAreaStuff}
@@ -190,28 +196,69 @@ export default class UploadScreen extends React.Component {
         formData.append('audio', {uri: path, name: audioFilename, type});
         formData.append('text', this.state.text);
 
-        //return await fetch("http://192.168.0.12:8000/social/spot-av-upload/", {
-        //return await fetch("http://192.168.0.12:8000/social/spot-av-upload/", {
-        return await fetch("https://beta.drypoetry.life/social/spot-av-upload/", {
+        /*
+         fetch("http://localhost:8000/social/spot-av-upload/", {
+            //return await fetch("http://192.168.0.12:8000/social/spot-av-upload/", {
+            //return await fetch("https://beta.drypoetry.life/social/spot-av-upload/", {
             method: 'POST',
             body: formData,
             header: {
                 'content-type': 'multipart/form-data',
             },
-        }).then(function () {
+
+        })
+            .uploadProgress({interval: 100}, (written, total) => {
+                console.log('uploaded', written / total)
+            })
+            .then(function () {
+                Alert.alert(
+                    'Upload complete',
+                    "Keep up the papping and spot safe... ",
+                    [
+                        {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    ],
+                    {cancelable: false}
+                );
+            }).catch((error) => {
+                console.error(error);
+                Alert.alert('Alert Title failure' + JSON.stringify(error))
+            })
+            .done();
+            */
+
+        var that = this;
+        return await axios({
+            method: 'post',
+            url: "https://beta.drypoetry.life/social/spot-av-upload/",
+            data: formData,
+            onUploadProgress: function (progressEvent) {
+                let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                //console.debug('onUploadProgress called with', arguments, 'Percent Completed:' + percentCompleted)
+                that.setState({uploadProgress: percentCompleted});
+                //console.log(progressEvent);
+            },
+        }).then(function (response) {
+            // handle success
             Alert.alert(
                 'Upload complete',
                 "Keep up the papping and spot safe... ",
                 [
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    {
+                        text: 'OK', onPress: function () {
+                            console.log('OK Pressed');
+                            that.setState({uploadProgress: 0});
+                        }
+
+                    },
                 ],
                 {cancelable: false}
             );
-        }).catch((error) => {
-            console.error(error);
-            Alert.alert('Alert Title failure' + JSON.stringify(error))
         })
-            .done();
+            .catch(function (error) {
+                // handle error
+                //console.log(error);
+                Alert.alert(error)
+            });
 
 
     };
@@ -352,5 +399,10 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         "width": "80%"
+    },
+    loaderBar: {
+        width: "50%",
+        backgroundColor: "#000000",
+        height: 10,
     }
 });
