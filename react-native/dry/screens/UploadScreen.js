@@ -7,6 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    TextInput
 } from 'react-native';
 import {WebBrowser} from 'expo';
 
@@ -36,14 +37,13 @@ export default class UploadScreen extends React.Component {
         super(props);
         let commonData = CommonDataManager.getInstance();
         //his.setState({image: commonData.imageFileUri});
-        console.log(this);
-        console.log(this.props);
-        console.log(this.props.navigaton);
         //this.props.navigation.addListener(this.onNavigatorEvent);  //setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
         //this.props.navigation.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+        this._handleTextChange = this._handleTextChange.bind(this);
+
         var that = this;
         this.props.navigation.addListener("didFocus", function () {
-            console.log("here");
+
             that.setState({image: commonData.imageFileUri});
             that.setState({audioFileUri: commonData.audioFileUri});
             //that.state.image = commonData.imageFileUri;
@@ -57,6 +57,7 @@ export default class UploadScreen extends React.Component {
         let commonData = CommonDataManager.getInstance();
         this.state.image = commonData.imageFileUri;
         this.state.audioFileUri = commonData.audioFileUri;
+        this.state.text = '';
 
 
         return (!this.state.image || !this.state.audioFileUri ? (
@@ -65,26 +66,37 @@ export default class UploadScreen extends React.Component {
                 <Text style={styles.helpLinkText}>You need to Pap a snap and record some audio before you can
                     upload</Text>
             </View>
+
         ) : (
             <View style={styles.container}>
-
-
                 <View style={styles.centerView}>
                     <View style={styles.buttonOuter}>
                         <TouchableOpacity onPress={this._handleUpload}>
                             <Text color="#fa2bf5" style={styles.buttonText2}>Upload</Text>
                         </TouchableOpacity>
                     </View>
+                    <Text style={styles.buttonText3}>Add your poetry</Text>
+                    <TextInput
+                        style={styles.textAreaStuff}
+                        onChangeText={this._handleTextChange}
+                        value={this.state.text}
+                        multiline={true}
+                        underlineColorAndroid='transparent'
+                    />
                 </View>
 
                 {/*{image && <Image source={{uri: image}} style={{width: 200, height: 200}}/>}
                     <View>
                         <Text>{this.state.audioFileUri}</Text>
                     </View>*/}
-                
+
             </View>
         ));
     }
+
+    _handleTextChange(incomingText) {
+        this.state.text = incomingText;
+    };
 
     _maybeRenderDevelopmentModeWarning() {
         if (__DEV__) {
@@ -175,8 +187,10 @@ export default class UploadScreen extends React.Component {
         audioFilename += ".wav";
         type = "audio";
         formData.append('audio', {uri: path, name: audioFilename, type});
+        formData.append('text', this.state.text);
 
-        return await fetch("http://127.0.0.1:8000/social/spot-av-upload/", {
+        //return await fetch("http://192.168.0.12:8000/social/spot-av-upload/", {
+        return await fetch("http://localhost:8000/social/spot-av-upload/", {
             method: 'POST',
             body: formData,
             header: {
@@ -289,7 +303,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         backgroundColor: '#555555',
         borderRadius: 10,
-        width: "100%",
+        width: "80%",
         borderWidth: 1,
         borderColor: '#fff'
     },
@@ -304,5 +318,21 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingLeft: 10,
         paddingRight: 10
+    },
+    buttonText3: {
+        color: '#fa2bf5',
+        textAlign: 'center',
+        paddingTop: 30,
+        paddingBottom: 30,
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    textAreaStuff: {
+        height: 150,
+        marginLeft: 10,
+        marginRight: 10,
+        borderColor: 'gray',
+        borderWidth: 1,
+        "width": "80%"
     }
 });

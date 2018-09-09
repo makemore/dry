@@ -19,10 +19,8 @@ def upload_spot_av(request):
     if request.method == 'POST':
         audio = request.FILES["audio"]
         image = request.FILES["image"]
-        print(audio)
-        print(image)
-
-        spotAV = SpotAV(audio=audio, image=image)
+        text = request.POST["text"]
+        spotAV = SpotAV(audio=audio, image=image, text=text)
         spotAV.save()
 
         # form = UploadFileForm(request.POST, request.FILES)

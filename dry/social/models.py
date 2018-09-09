@@ -12,6 +12,7 @@ from PIL import Image
 
 
 class SpotAV(BaseModel):
+    text = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to="spot-av", blank=True)
     audio = models.FileField(upload_to="spot-av", blank=True)
     video = models.FileField(upload_to="spot-av", blank=True)

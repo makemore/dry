@@ -69,8 +69,9 @@ export default class AudioScreen extends React.Component {
             shouldCorrectPitch: true,
             volume: 1.0,
             rate: 1.0,
-            recordButtonText: "Record",
+            recordButtonText: "Record Audio",
             playButtonText: "Play",
+            showNextStep:false
         };
         this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
         // // UNCOMMENT THIS TO TEST maxFileSize:
@@ -212,7 +213,8 @@ export default class AudioScreen extends React.Component {
     _onRecordPressed = () => {
         if (this.state.isRecording) {
             this._stopRecordingAndEnablePlayback();
-            this.setState({recordButtonText: "Record"});
+            this.setState({recordButtonText: "Record Audio"});
+            this.setState({showNextStep:true});
         } else {
             this.setState({recordButtonText: "Stop"});
             this.setState({playButtonText: "Play"});
@@ -356,6 +358,13 @@ export default class AudioScreen extends React.Component {
                     <TouchableOpacity onPress={this._onPlayPausePressed}>
                         <Text color="#fa2bf5" style={styles.buttonText2}>{this.state.playButtonText}</Text>
                     </TouchableOpacity>
+                </View>
+
+
+                <View style={styles.getStartedContainer}>
+                    {this.state.showNextStep &&
+                    <Text style={styles.buttonText1}>Go to Upload below</Text>
+                    }
                 </View>
                 {/*
 
@@ -614,16 +623,12 @@ const styles = StyleSheet.create({
         color: '#2e78b7',
     },
     buttonOuter: {
-        marginRight: 40,
-        marginLeft: 40,
-        paddingTop: 10,
-        marginBottom:20,
-        paddingBottom:10,
-        paddingTop: 10,
-        paddingBottom: 10,
+        marginBottom: 20,
         backgroundColor: '#555555',
         borderRadius: 10,
-        width: "100%",
+        width: "80%",
+        marginRight: 40,
+        marginLeft: 40,
         borderWidth: 1,
         borderColor: '#fff'
     },
@@ -631,12 +636,16 @@ const styles = StyleSheet.create({
         color: '#3cc3f3',
         textAlign: 'center',
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
     },
     buttonText2: {
         color: '#fa2bf5',
         textAlign: 'center',
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
     }
 });

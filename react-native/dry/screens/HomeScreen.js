@@ -22,6 +22,7 @@ export default class HomeScreen extends React.Component {
 
     state = {
         image: null,
+        showRecordDirection:false
     };
 
     /*<View style={styles.welcomeContainer}>
@@ -108,6 +109,12 @@ export default class HomeScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
 
+                    <View style={styles.getStartedContainer}>
+                        {this.state.showRecordDirection &&
+                        <Text style={styles.buttonText2}>Record some poetry below</Text>
+                        }
+                    </View>
+
                 </ScrollView>
 
 
@@ -158,7 +165,7 @@ export default class HomeScreen extends React.Component {
             //aspect: [4, 3],
         });
 
-        console.log(result);
+
 
 
         //commonData.setUserID("User1");
@@ -168,6 +175,8 @@ export default class HomeScreen extends React.Component {
             let commonData = CommonDataManager.getInstance();
             commonData.imageFileUri = result.uri;
             this.setState({image: result.uri});
+            this.setState({image: result.uri});
+            this.setState({showRecordDirection:true});
         }
         else {
             throw new Error('Location permission not granted');
@@ -184,7 +193,7 @@ export default class HomeScreen extends React.Component {
             //aspect: [4, 3],
         });
 
-        console.log(result);
+
 
         if (!result.cancelled) {
             let commonData = CommonDataManager.getInstance();
@@ -227,6 +236,7 @@ const styles = StyleSheet.create({
     },
     getStartedContainer: {
         alignItems: 'center',
+        marginTop: 30,
         marginHorizontal: 50,
     },
     homeScreenFilename: {
@@ -290,11 +300,11 @@ const styles = StyleSheet.create({
     },
     buttonOuter: {
         marginTop: 10,
-        paddingTop: 10,
-        paddingBottom: 10,
         backgroundColor: '#555555',
         borderRadius: 10,
-        width: "100%",
+        width: "80%",
+        marginRight: 40,
+        marginLeft: 40,
         borderWidth: 1,
         borderColor: '#fff'
     },
@@ -302,12 +312,16 @@ const styles = StyleSheet.create({
         color: '#3cc3f3',
         textAlign: 'center',
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
     },
     buttonText2: {
         color: '#fa2bf5',
         textAlign: 'center',
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
     }
 });
