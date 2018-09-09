@@ -1,0 +1,1 @@
+0 * * * * /webapps/dry/env_dry/bin/python /webapps/dry/dry/standalone/fb_scrape.py

@@ -4,8 +4,8 @@ from fabric.contrib.console import confirm
 from fabric.contrib.files import upload_template
 import os
 
-from dotenv import load_dotenv, find_dotenv
-load_dotenv(find_dotenv())
+#from dotenv import load_dotenv, find_dotenv
+#load_dotenv(find_dotenv())
 
 
 

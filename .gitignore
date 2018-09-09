@@ -1,3 +1,7 @@
+.bash_history
+.config/
+.imageio/
+.selected_editor
 .idea/
 .viminfo
 env_dry/
