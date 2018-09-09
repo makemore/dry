@@ -5,7 +5,7 @@ load_dotenv(find_dotenv())
 import os, requests, json
 import pprint, django, sys, tempfile
 from os.path import dirname, abspath
-
+from django.utils.text import slugify
 d = dirname(dirname(abspath(__file__)))
 sys.path.append(d)  # here store is root folder(means parent).
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dry.settings")
@@ -70,7 +70,14 @@ def process_page_of_data(data):
                 spot_page.title = post["message"][:70]
                 spot_page.body = post["message"].replace('\n', '<br />')
             else:
-                spot_page.title = "None"
+                spot_page.title = slugify(post["id"])
+
+
+            if spot_page.slug == "" or spot_page.slug == None:
+                spot_page.slug = slugify(post["id"])
+
+            print("hello", spot_page.slug)
+
 
             # pp.pprint(post)
 
@@ -119,14 +126,21 @@ def process_page_of_data(data):
             # print(post["place"])
             if "place" in post:
                 print("doing place")
+                print(4)
                 spot_page.address = post["place"]["name"]
+                print(5)
                 spot_page.location = str(post["place"]["location"]["latitude"]) + "," + str(
                     post["place"]["location"]["longitude"])
+                print(6)
             else:
                 print("not doing place")
+            print(1)
+            print(spot_page.title)
+            print(spot_page.body)
+            print(spot_page.slug)
             if first_time_create:
                 spot_index_page.add_child(instance=spot_page)
-
+            print(2)
             print(spot_page.facebook_created)
             spot_page.save_revision().publish()
         else:
