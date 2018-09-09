@@ -190,7 +190,8 @@ export default class UploadScreen extends React.Component {
         formData.append('text', this.state.text);
 
         //return await fetch("http://192.168.0.12:8000/social/spot-av-upload/", {
-        return await fetch("http://localhost:8000/social/spot-av-upload/", {
+        //return await fetch("http://192.168.0.12:8000/social/spot-av-upload/", {
+        return await fetch("https://beta.drypoetry.life/social/spot-av-upload/", {
             method: 'POST',
             body: formData,
             header: {
