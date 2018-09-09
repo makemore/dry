@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     },
     getStartedContainer: {
         alignItems: 'center',
-        marginTop: 30,
+        marginTop: 5,
         marginHorizontal: 50,
     },
     homeScreenFilename: {

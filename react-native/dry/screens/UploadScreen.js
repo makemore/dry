@@ -7,7 +7,8 @@ import {
     Text,
     TouchableOpacity,
     View,
-    TextInput
+    TextInput,
+    Alert
 } from 'react-native';
 import {WebBrowser} from 'expo';
 
@@ -68,7 +69,7 @@ export default class UploadScreen extends React.Component {
             </View>
 
         ) : (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <View style={styles.centerView}>
                     <View style={styles.buttonOuter}>
                         <TouchableOpacity onPress={this._handleUpload}>
@@ -90,7 +91,7 @@ export default class UploadScreen extends React.Component {
                         <Text>{this.state.audioFileUri}</Text>
                     </View>*/}
 
-            </View>
+            </ScrollView>
         ));
     }
 
@@ -197,7 +198,22 @@ export default class UploadScreen extends React.Component {
             header: {
                 'content-type': 'multipart/form-data',
             },
-        });
+        }).then(function () {
+            Alert.alert(
+                'Upload complete',
+                "Keep up the papping and spot safe... ",
+                [
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                {cancelable: false}
+            );
+        }).catch((error) => {
+            console.error(error);
+            Alert.alert('Alert Title failure' + JSON.stringify(error))
+        })
+            .done();
+
+
     };
 }
 
@@ -205,6 +221,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+        marginTop: 50
     },
     developmentModeText: {
         marginBottom: 20,
