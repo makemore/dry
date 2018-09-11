@@ -14,6 +14,9 @@
   ],
   "dependencies": {
     "foundation-sites": "^6.4.3",
-    "masonry-layout": "^4.2.1"
+    "masonry-layout": "masonry#^4.2.2",
+    "isotope-layout": "^3.0.6",
+    "bootstrap": "^4.1.3",
+    "imagesloaded": "images-loaded#^4.1.4"
   }
 }

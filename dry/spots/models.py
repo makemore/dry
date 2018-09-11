@@ -27,8 +27,6 @@ class SpotIndexPage(Page):
         return context
 
 
-
-
 class SpotPage(Page):
     facebook_id = models.CharField(max_length=255, null=True, blank=True)
 
@@ -46,6 +44,14 @@ class SpotPage(Page):
         on_delete=models.SET_NULL,
         related_name='+'
     )
+
+    spot_av = models.ForeignKey(
+        "social.SpotAV",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+
     body = RichTextField(null=True, blank=True)
 
     address = models.CharField(max_length=250, blank=True, null=True)
@@ -55,6 +61,7 @@ class SpotPage(Page):
         FieldPanel('facebook_created'),
         FieldPanel('facebook_updated'),
         ImageChooserPanel('image'),
+        FieldPanel('spot_av'),
         FieldPanel('body', classname="full"),
         MultiFieldPanel([
             FieldPanel('address'),

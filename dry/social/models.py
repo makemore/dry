@@ -9,6 +9,11 @@ import moviepy.video.fx.all as vfx
 from moviepy.editor import concatenate_videoclips
 from moviepy.video.fx.all import crop
 from PIL import Image
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from wagtail.wagtailcore.models import Page
+from django.utils.text import slugify
+from spots.models import SpotPage
 
 
 class SpotAV(BaseModel):
@@ -16,6 +21,24 @@ class SpotAV(BaseModel):
     image = models.ImageField(upload_to="spot-av", blank=True)
     audio = models.FileField(upload_to="spot-av", blank=True)
     video = models.FileField(upload_to="spot-av", blank=True)
+
+    def __str__(self):
+        return str(self.id)
+
+    def add_to_new_spot_page(self):
+        spot_index_page = Page.objects.get(id=4)
+        spot_page = SpotPage()
+
+        if self.text:
+            spot_page.title = self.text[:70]
+            spot_page.body = self.text.replace('\n', '<br />')
+        else:
+            spot_page.title = slugify(self.id)
+
+        spot_page.spot_av = self
+        spot_index_page.add_child(instance=spot_page)
+        spot_page.save_revision().publish()
+
 
     def render(self):
         if self.image is None or self.audio is None:
@@ -34,7 +57,6 @@ class SpotAV(BaseModel):
             f = open(filename, "rb")
             self.image.save(os.path.basename(filename), File(f))
             os.remove(filename)
-
 
         image_clip = ImageClip(self.image.path)
         image_clip.set_duration(audio_clip.duration)

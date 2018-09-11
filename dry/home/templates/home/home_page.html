@@ -3,5 +3,148 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-    {% include "includes/gallery_view.html" with spot=self.spot_pages %}
+    <style>
+
+        /* not quite 33.3% */
+        .grid-sizer,
+        .grid-item {
+            width: 33.2%;
+        }
+
+        /* not quite 33.3% */
+        .item {
+            width: 33.2%;
+        }
+
+        /* images cover up the gap */
+        .item img {
+            width: 100%;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .grid-sizer,
+            .grid-item {
+                width: 100%;
+            }
+        }
+
+        /* images cover up the gap */
+        .item img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay-text {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            color: white;
+            display: none;
+            background-color: black;
+        }
+
+    </style>
+    <div class="wrapper" style="margin-top:90px">
+        <div class="inner content grid masonry-gallery" style="padding-top:0px;">
+            <div class="grid-sizer"></div>
+            {% for spot_page in self.spot_pages %}
+                <div class="grid-item">
+                    {% if spot_page.spot_av %}
+                        {% if spot_page.spot_av.video %}
+                            <a class="grouped_elements" rel="group1" href="{{ tmp_photo_full.url }}">
+                                {#% image spot_page.image max-1920x1200 as tmp_photo_full %#}
+                                <video style="width:100%;" autoplay="1" loop="1">
+                                    <source src="{{ spot_page.spot_av.video.url }}">
+                                </video>
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a class="grouped_elements" rel="group1" href="{{ tmp_photo_full.url }}">
+                            {% image spot_page.image max-600x600 as tmp_photo %}
+                            {#% image spot_page.image max-1920x1200 as tmp_photo_full %#}
+                            <img class="" src="{{ tmp_photo.url }}">
+                        </a>
+                    {% endif %}
+                    <div class="overlay-text">{{ spot_page.body|richtext }}</div>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+    {#% include "includes/gallery_view.html" with spot=self.spot_pages %#}
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $(document).ready(function () {
+            var $grid = $('.grid').masonry({
+                // set itemSelector so .grid-sizer is not used in layout
+                itemSelector: '.grid-item',
+                columnWidth: '.grid-sizer',
+                percentPosition: true
+            });
+            window.$grid = $grid;
+
+            var height = 0;
+            $grid.imagesLoaded().progress(function () {
+                $grid.masonry('layout');
+                height = $(document).height() - $("footer").height();
+            });
+
+            $(".grid-item").mouseover(function () {
+                $(this).find(".overlay-text").show();
+            });
+
+            $(".grid-item").mouseout(function () {
+                $(this).find(".overlay-text").hide();
+            });
+
+            /*var pageId =
+            //
+
+
+
+            {{ self.id }};
+            var totalImages =
+            //
+
+
+
+            {{ self.total_images }};
+            var offset = 0;*/
+
+            var loading = false;
+            $(window).on("scroll", function (e) {
+                var scrollTop = $(window).scrollTop();
+                scrollTop += $(window).height();
+                if (scrollTop > height) {
+                    console.log(loading, offset, totalImages);
+                    if (!loading && offset < totalImages) {
+                        loading = true;
+                        offset += 10;
+                        $.ajax("/django-admin/images/get-images-for-flexible-gallery-page/?page_id=" + pageId + "&limit=" + parseInt(offset + 10) + "&offset=" + offset, {
+                            cache: false,
+                            success: function (response) {
+                                var html = "";
+                                response.images.forEach(function (image) {
+                                    html += '<a class="grouped_elements" rel="group1" href="' + image.largeimage_url + '"><img class="grid-item" src="' + image.masonarygalleryitem_url + '"></a>';
+                                });
+                                $(".masonry-gallery").append(html);
+                                $grid.imagesLoaded().progress(function () {
+                                    $grid.masonry('layout');
+                                    height = $(document).height() - $("footer").height();
+                                });
+                                //$grid.masonry('appended', $grid, true);
+                                $grid.masonry('reloadItems');
+                                $grid.masonry('layout');
+                                setTimeout(function () {
+                                    loading = false;
+                                }, 250);
+                            }
+                        })
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}

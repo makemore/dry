@@ -126,22 +126,15 @@ def process_page_of_data(data):
             # print(post["place"])
             if "place" in post:
                 print("doing place")
-                print(4)
                 spot_page.address = post["place"]["name"]
-                print(5)
                 spot_page.location = str(post["place"]["location"]["latitude"]) + "," + str(
                     post["place"]["location"]["longitude"])
-                print(6)
             else:
                 print("not doing place")
-            print(1)
-            print(spot_page.title)
-            print(spot_page.body)
-            print(spot_page.slug)
+
             if first_time_create:
                 spot_index_page.add_child(instance=spot_page)
-            print(2)
-            print(spot_page.facebook_created)
+
             spot_page.save_revision().publish()
         else:
             print("post is not new or changed, doing nothing")

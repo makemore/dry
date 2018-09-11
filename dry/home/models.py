@@ -11,11 +11,12 @@ class HomePage(Page):
 
     @property
     def spot_pages(self):
-        pages = SpotPage.objects.order_by("-facebook_created")[:5]
-        found = False
-        index = -1
-        while not found:
-            index += 1
-            if pages[index].image is not None:
-                found = True
-        return pages[index]
+        pages = SpotPage.objects.order_by("-facebook_created")[:10]
+        return pages
+        #found = False
+        #index = -1
+        #while not found:
+        #    index += 1
+        #    if pages[index].image is not None:
+        #        found = True
+        #return pages[index]

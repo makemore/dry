@@ -26,6 +26,7 @@
 
     {% compress css %}
         <link rel="stylesheet" type="text/x-scss" href="{% static "css/main.scss" %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static "bootstrap/dist/css/bootstrap.css" %}"/>
     {% endcompress %}
 
 
@@ -37,43 +38,34 @@
 
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
+
+<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+
+    <a class="logo-link navbar-brand" href="/"><img class="logo-image" src="{% static 'img/logo.jpg' %}"/></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/map/">Map</a>
+            </li>
+        </ul>
+        <span class="navbar-text">
+      Spot Safely
+    </span>
+    </div>
+</nav>
+
+
+{% block content %}{% endblock %}
 {% comment %}
-    <div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
-        <button class="menu-icon" type="button" data-toggle></button>
-        <div class="title-bar-title">Menu</div>
-    </div>
-
-
-    <div class="top-bar" id="main-menu">
-        <div class="top-bar-left">
-            <ul class="dropdown menu" data-dropdown-menu>
-                <li></li>
-            </ul>
-        </div>
-
-        <div class="top-bar-right">
-            <ul class="menu vertical medium-horizontal expanded" data-responsive-menu="drilldown medium-dropdown">
-                <li class="has-submenu">
-                    <a href="#">One</a>
-                    <ul class="submenu menu vertical" data-submenu>
-                        <li><a href="#">One</a></li>
-                        <li><a href="#">Two</a></li>
-                        <li><a href="#">Three</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Two</a></li>
-                <li><a href="#">Three</a></li>
-            </ul>
-        </div>
-    </div>
-{% endcomment %}
-<div class="grid-x">
+    <div class="grid-x">
     <div class="side-nav cell medium-3 large-3 text-center hide-for-small-only" style="height:100%;overflow-y:scroll;">
-        <a class="logo-link" href="/"><img class="logo-image" src="{% static 'img/logo.jpg' %}"/></a>
-        <div class="top-menu" style="float:left">
-            ||| <a href="/">Home</a> ||| <a href="/map/">Map</a>
-        </div>
-
         <ul class="spot-list">
             {% for spot in spots %}
                 <li><a href="{{ spot.url }}">{% image spot.image width-20 %}
@@ -81,21 +73,25 @@
             {% endfor %}
         </ul>
     </div>
-    {% block content %}{% endblock %}
+{% endcomment %}
 
-    {# Global javascript #}
-    {% compress js %}
-        <script src="{% static 'jquery/dist/jquery.js' %}"></script>
-        <script type="text/javascript" src="{% static 'foundation-sites/dist/js/foundation.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/dry.js' %}"></script>
-    {% endcompress %}
 
-    {% block extra_js %}
-        {# Override this in templates to add extra javascript #}
-    {% endblock %}
+{# Global javascript #}
+{% compress js %}
+    <script src="{% static 'jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+    <script type="text/javascript" src="{% static 'foundation-sites/dist/js/foundation.js' %}"></script>
+    <script src="{% static 'masonry-layout/dist/masonry.pkgd.js' %}"></script>
+    <script type='text/javascript' src="{% static "imagesloaded/imagesloaded.js" %}"></script>
+    <script type="text/javascript" src="{% static 'js/dry.js' %}"></script>
+{% endcompress %}
 
-    <script>
-        $(document).foundation();
-    </script>
+{% block extra_js %}
+
+{% endblock %}
+
+<script>
+    $(document).foundation();
+</script>
 </body>
 </html>
