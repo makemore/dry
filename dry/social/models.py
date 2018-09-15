@@ -69,7 +69,8 @@ class SpotAV(BaseModel):
         image_clip = ImageClip(self.image.path)
         image_clip.set_duration(audio_clip.duration)
 
-        logo_clip = ImageSequenceClip(os.path.join(settings.BASE_DIR, "compositing_assets"), fps=30, durations=audio_clip.duration)
+        logo_clip = ImageSequenceClip(os.path.join(settings.BASE_DIR, "compositing_assets"), fps=30,
+                                      durations=audio_clip.duration)
         logo_clip.set_position((0.4, 0.7), relative=True)
         # logo_clip =
 
@@ -85,7 +86,8 @@ class SpotAV(BaseModel):
         video.duration = audio_clip.duration
         (w, h) = video.size
         filename = 'video' + str(self.id) + '.mp4'
-        video.write_videofile(filename, fps=30, codec="h264", temp_audiofile="/tmp/random_name.mp3")
+        video.write_videofile(os.path.join(settings.BASE_DIR, filename), fps=30, codec="h264",
+                              temp_audiofile="/tmp/" + str(self.id) + ".mp3")
         f = open(filename, "rb")
         self.video.save(os.path.basename(filename), File(f))
         os.remove(filename)
@@ -102,4 +104,4 @@ class SpotAV(BaseModel):
 # method for updating
 @receiver(post_save, sender=SpotAV)
 def add_render_to_queue(sender, instance, **kwargs):
-     instance.add_render_to_queue()
+    instance.add_render_to_queue()
