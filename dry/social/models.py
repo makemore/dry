@@ -85,8 +85,8 @@ class SpotAV(BaseModel):
 
         video.duration = audio_clip.duration
         (w, h) = video.size
-        filename = 'video' + str(self.id) + '.mp4'
-        video.write_videofile(os.path.join(settings.BASE_DIR, filename), fps=30, codec="h264",
+        filename = os.path.join(settings.BASE_DIR, 'video' + str(self.id) + '.mp4')
+        video.write_videofile(filename, fps=30, codec="h264",
                               temp_audiofile="/tmp/" + str(self.id) + ".mp3")
         f = open(filename, "rb")
         self.video.save(os.path.basename(filename), File(f))
