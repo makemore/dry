@@ -17,7 +17,7 @@ from spots.models import SpotPage
 import django_rq
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.conf import settings
 
 
 def add_render_job_to_queue(spot_av_id):
@@ -69,7 +69,7 @@ class SpotAV(BaseModel):
         image_clip = ImageClip(self.image.path)
         image_clip.set_duration(audio_clip.duration)
 
-        logo_clip = ImageSequenceClip("./compositing_assets", fps=30, durations=audio_clip.duration)
+        logo_clip = ImageSequenceClip(os.path.join(settings.BASE_DIR, "compositing_assets"), fps=30, durations=audio_clip.duration)
         logo_clip.set_position((0.4, 0.7), relative=True)
         # logo_clip =
 
