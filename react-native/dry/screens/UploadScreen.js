@@ -230,6 +230,7 @@ export default class UploadScreen extends React.Component {
         return await axios({
             method: 'post',
             url: "https://beta.drypoetry.life/social/spot-av-upload/",
+            //url: "http://localhost:8000/social/spot-av-upload/",
             data: formData,
             onUploadProgress: function (progressEvent) {
                 let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);

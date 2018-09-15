@@ -21,8 +21,6 @@ def upload_spot_av(request):
         spotAV = SpotAV(audio=audio, image=image, text=text)
         spotAV.save()
 
-        spotAv.add_render_to_queue()
-
         spotAV.add_to_new_spot_page()
 
         return JsonResponse({})
