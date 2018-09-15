@@ -54,3 +54,4 @@ def deploy():
             run("python manage.py migrate --settings=" + repoName + ".settings.production")
             run("python manage.py collectstatic --noinput --settings=" + repoName + ".settings.production")
             run("supervisorctl restart " + outername)
+            run("supervisorctl restart dry_worker")
