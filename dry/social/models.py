@@ -30,6 +30,7 @@ class SpotAV(BaseModel):
     image = models.ImageField(upload_to="spot-av", blank=True)
     audio = models.FileField(upload_to="spot-av", blank=True)
     video = models.FileField(upload_to="spot-av", blank=True)
+    job_added_to_queue_once = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id)
@@ -98,7 +99,10 @@ class SpotAV(BaseModel):
         print(self)
 
     def add_render_to_queue(self):
-        django_rq.enqueue(add_render_job_to_queue, self.id)
+        if not self.job_added_to_queue_once:
+            self.job_added_to_queue_once = True
+            self.save()
+            django_rq.enqueue(add_render_job_to_queue, self.id)
 
 
 # method for updating
