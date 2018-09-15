@@ -13,6 +13,7 @@ from wagtailgeowidget.edit_handlers import GeoPanel
 from wagtailgeowidget.helpers import geosgeometry_str_to_struct
 
 
+
 class SpotIndexPage(Page):
     subpage_types = ['spots.SpotPage']
 

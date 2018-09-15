@@ -15,6 +15,9 @@ from wagtail.wagtailcore.models import Page
 from django.utils.text import slugify
 from spots.models import SpotPage
 import django_rq
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 
 def add_render_job_to_queue(spot_av_id):
@@ -94,3 +97,9 @@ class SpotAV(BaseModel):
 
     def add_render_to_queue(self):
         django_rq.enqueue(add_render_job_to_queue, self.id)
+
+
+# method for updating
+@receiver(post_save, sender=SpotAV)
+def add_render_to_queue(sender, instance, **kwargs):
+     instance.add_render_to_queue()
