@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'taggit',
     'rest_framework',
     'corsheaders',
+    "django_rq",
 
     'social',
 
@@ -159,3 +160,22 @@ COMPRESS_PRECOMPILERS = (
 
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SAMESITE = None
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,
+    },
+    'high': {
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379/0'), # If you're on Heroku
+        'DEFAULT_TIMEOUT': 500,
+    },
+    'low': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    }
+}
+

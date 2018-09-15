@@ -14,6 +14,12 @@ from rest_framework.response import Response
 from wagtail.wagtailcore.models import Page
 from django.utils.text import slugify
 from spots.models import SpotPage
+import django_rq
+
+
+def add_render_job_to_queue(spot_av_id):
+    spot_av = SpotAV.objects.get(pk=spot_av_id)
+    spot_av.render()
 
 
 class SpotAV(BaseModel):
@@ -38,7 +44,6 @@ class SpotAV(BaseModel):
         spot_page.spot_av = self
         spot_index_page.add_child(instance=spot_page)
         spot_page.save_revision().publish()
-
 
     def render(self):
         if self.image is None or self.audio is None:
@@ -86,3 +91,6 @@ class SpotAV(BaseModel):
         # cropped_clip.write_videofile("myHolidays_edited.mp4", fps=30, codec="h264")
 
         print(self)
+
+    def add_render_to_queue(self):
+        django_rq.enqueue(add_render_job_to_queue, self.id)
