@@ -69,9 +69,9 @@ export default class AudioScreen extends React.Component {
             shouldCorrectPitch: true,
             volume: 1.0,
             rate: 1.0,
-            recordButtonText: "Record Audio",
+            recordButtonText: "Record Sound",
             playButtonText: "Play",
-            showNextStep:false
+            showNextStep: false
         };
         this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
         // // UNCOMMENT THIS TO TEST maxFileSize:
@@ -213,8 +213,8 @@ export default class AudioScreen extends React.Component {
     _onRecordPressed = () => {
         if (this.state.isRecording) {
             this._stopRecordingAndEnablePlayback();
-            this.setState({recordButtonText: "Record Audio"});
-            this.setState({showNextStep:true});
+            this.setState({recordButtonText: "Record Sound"});
+            this.setState({showNextStep: true});
         } else {
             this.setState({recordButtonText: "Stop"});
             this.setState({playButtonText: "Play"});
@@ -363,8 +363,13 @@ export default class AudioScreen extends React.Component {
 
                 <View style={styles.getStartedContainer}>
                     {this.state.showNextStep &&
-                    <Text style={styles.buttonText1}>Go to Upload below</Text>
+                    <View style={styles.buttonOuter}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('SettingsStack')}>
+                            <Text color="#fa2bf5" style={styles.buttonText2}>Click here to upload</Text>
+                        </TouchableOpacity>
+                    </View>
                     }
+
                 </View>
                 {/*
 

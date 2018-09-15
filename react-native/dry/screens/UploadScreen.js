@@ -398,7 +398,8 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderColor: 'gray',
         borderWidth: 1,
-        "width": "80%"
+        "width": "80%",
+        marginBottom:300
     },
     loaderBar: {
         width: "50%",

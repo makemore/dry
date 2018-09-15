@@ -20,7 +20,7 @@ HomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
+          ? `ios-camera${focused ? '' : '-outline'}`
           : 'md-information-circle'
       }
     />
@@ -46,11 +46,11 @@ const AudioStack = createStackNavigator({
 });
 
 AudioStack.navigationOptions = {
-  tabBarLabel: 'Poetry',
+  tabBarLabel: 'Sound',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
+      name={Platform.OS === 'ios' ? `ios-recording${focused ? '' : '-outline'}` : 'md-link'}
     />
   ),
 };
@@ -60,11 +60,11 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Upload',
+  tabBarLabel: 'Send',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
+      name={Platform.OS === 'ios' ? `ios-cloud-upload${focused ? '' : '-outline'}` : 'md-cloud-upload'}
     />
   ),
 };

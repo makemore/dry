@@ -22,7 +22,7 @@ export default class HomeScreen extends React.Component {
 
     state = {
         image: null,
-        showRecordDirection:false
+        showRecordDirection: false
     };
 
     /*<View style={styles.welcomeContainer}>
@@ -90,13 +90,12 @@ export default class HomeScreen extends React.Component {
                     </View>
 
 
+                    {!this.state.showRecordDirection &&
                     <View style={styles.getStartedContainer}>
-
                         <Text style={styles.getStartedText}>Spot safely brothers and sisters</Text>
-                        <Text style={styles.getStartedText}>
-
-                        </Text>
                     </View>
+                    }
+
 
                     <View style={styles.buttonOuter}>
                         <TouchableOpacity onPress={this._handleCameraOpen}>
@@ -108,12 +107,13 @@ export default class HomeScreen extends React.Component {
                             <Text color="#fa2bf5" style={styles.buttonText2}>Pick photo</Text>
                         </TouchableOpacity>
                     </View>
-
-                    <View style={styles.getStartedContainer}>
-                        {this.state.showRecordDirection &&
-                        <Text style={styles.buttonText2}>Record some poetry below</Text>
-                        }
+                    {this.state.showRecordDirection &&
+                    <View style={styles.buttonOuter}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('AudioStack')}>
+                            <Text color="#fa2bf5" style={styles.buttonText2}>Click here to record sound</Text>
+                        </TouchableOpacity>
                     </View>
+                    }
 
                 </ScrollView>
 
@@ -166,8 +166,6 @@ export default class HomeScreen extends React.Component {
         });
 
 
-
-
         //commonData.setUserID("User1");
 
 
@@ -176,12 +174,13 @@ export default class HomeScreen extends React.Component {
             commonData.imageFileUri = result.uri;
             this.setState({image: result.uri});
             this.setState({image: result.uri});
-            this.setState({showRecordDirection:true});
+            this.setState({showRecordDirection: true});
         }
         else {
             throw new Error('Location permission not granted');
         }
     };
+
 
     _handleCameraOpen = async () => {
         const {Location, Permissions} = Expo;
@@ -192,7 +191,6 @@ export default class HomeScreen extends React.Component {
             allowsEditing: false,
             //aspect: [4, 3],
         });
-
 
 
         if (!result.cancelled) {
