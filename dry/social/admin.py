@@ -13,6 +13,8 @@ render_video.short_description = "Render Video"
 
 def add_render_to_queue(modeladmin, request, queryset):
     for video in queryset:
+        video.job_added_to_queue_once = False
+        video.save() z
         video.add_render_to_queue()
 
 

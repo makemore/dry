@@ -24,7 +24,7 @@ urlpatterns = [
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:
-    url(r'^django-rq/', include('django_rq.urls')),
+    url(r'^rq/', include('django_rq.urls')),
     url(r'', include(wagtail_urls)),
 
     # Alternatively, if you want Wagtail pages to be served from a subpath
