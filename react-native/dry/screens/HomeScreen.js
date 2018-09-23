@@ -7,6 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Alert,
 } from 'react-native';
 import {WebBrowser} from 'expo';
 
@@ -14,6 +15,13 @@ import {Button} from 'react-native';
 import {ImagePicker} from 'expo';
 import CommonDataManager from '../data/CommonDataManager';
 import {MonoText} from '../components/StyledText';
+
+import {
+    LoginManager,
+    AccessToken,
+    GraphRequest,
+    GraphRequestManager
+} from 'react-native-fbsdk';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -98,7 +106,7 @@ export default class HomeScreen extends React.Component {
 
 
                     <View style={styles.buttonOuter}>
-                        <TouchableOpacity onPress={this._handleCameraOpen}>
+                        <TouchableOpacity onPress={this._logInComplex}>
                             <Text color="#3cc3f3" style={styles.buttonText1}>Take photo</Text>
                         </TouchableOpacity>
                     </View>
@@ -181,6 +189,60 @@ export default class HomeScreen extends React.Component {
         }
     };
 
+
+    _logInComplex = async function () {
+        // native_only config will fail in the case that the user has
+        // not installed in his device the Facebook app. In this case we
+        // need to go for webview.
+        var result;
+        try {
+            console.log("poop2");
+            this.setState({showLoadingModal: true});
+            LoginManager.setLoginBehavior('WEB_ONLY');//NATIVE_ONLY
+            console.log(LoginManager);
+            result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+        } catch (nativeError) {
+            try {
+                LoginManager.setLoginBehavior('WEB_ONLY');
+                result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+            } catch (webError) {
+                // show error message to the user if none of the FB screens
+                // did not open
+            }
+        }
+        // handle the case that users clicks cancel button in Login view
+
+        if (result.isCancelled) {
+            this.setState({
+                showLoadingModal: false,
+                notificationMessage: I18n.t('welcome.FACEBOOK_CANCEL_LOGIN')
+            });
+        } else {
+            // Create a graph request asking for user information
+            this.FBGraphRequest('id, email, picture.type(large)', this.FBLoginCallback);
+        }
+    };
+
+    //
+    _logIn = async function () {
+
+        LoginManager.logInWithPublishPermissions(['publish_groups'])
+        /*
+        const {type, token} = await Expo.Facebook.logInWithReadPermissionsAsync('330981290725805', {
+            permissions: ['public_profile'],
+            behavior: "web"
+        });
+        if (type === 'success') {
+            // Get the user's name using Facebook's Graph API
+            const response = await fetch(
+                `https://graph.facebook.com/me?access_token=${token}`);
+            Alert.alert(
+                'Logged in!',
+                `Hi ${(await response.json()).name}!`,
+            );
+        }
+        */
+    };
 
     _handleCameraOpen = async () => {
         const {Location, Permissions} = Expo;

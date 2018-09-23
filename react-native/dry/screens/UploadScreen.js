@@ -128,6 +128,25 @@ export default class UploadScreen extends React.Component {
         }
     }
 
+    _logIn = async function () {
+        const {type, token} = await Expo.Facebook.logInWithReadPermissionsAsync('330981290725805', {
+            permissions: ['public_profile'],
+            behavior: "web"
+        });
+        if (type === 'success') {
+            // Get the user's name using Facebook's Graph API
+            const response = await fetch(
+                `https://graph.facebook.com/me?access_token=${token}`);
+            Alert.alert(
+                'Logged in, do the upload shit now',
+                `Hi ${(await response.json()).name}!`,
+            );
+
+            //_handleUpload();
+
+        }
+    };
+
     _handleLearnMorePress = () => {
         WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
     };
