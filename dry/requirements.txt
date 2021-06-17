@@ -36,7 +36,7 @@ six==1.11.0
 tqdm==4.24.0
 Unidecode==0.4.21
 urllib3==1.22
-wagtail==1.13.1
+wagtail==2.11.8
 wagtailgeowidget==3.1.7
 webencodings==0.5.1
 Willow==1.0
