@@ -20,7 +20,7 @@ idna==2.6
 imageio==2.3.0
 libsass==0.13.7
 moviepy==0.2.3.5
-numpy==1.15.0
+numpy==1.22.0
 olefile==0.44
 Pillow==4.3.0
 psycopg2==2.7.3.2
